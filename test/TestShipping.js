@@ -40,7 +40,7 @@ it("should return the status Shipped", async ()=> {
     assert.equal(status, "Delivered");
   });
 
-  it('should return correct event description', async()=>{
+  it('should return correct event description when its Delivered', async()=>{
 
     // Instance of our deployed contract
     const instance = await ShippingStatus.deployed();
@@ -51,6 +51,20 @@ it("should return the status Shipped", async ()=> {
     // Check event description is correct
     truffleAssert.eventEmitted(delivered, 'LogNewAlert', (event) =>{
       return event.description == 'Your package has arrived';
+    });
+  });
+
+  it('should return correct event description when its Shipped', async()=>{
+
+    // Instance of our deployed contract
+    const instance = await ShippingStatus.deployed();
+
+    // Calling the Delivered() function
+    const delivered = await instance.Shipped();
+
+    // Check event description is correct
+    truffleAssert.eventEmitted(delivered, 'LogNewAlert', (event) =>{
+      return event.description == 'Your package has been shipped';
     });
   });
 });
